@@ -1,0 +1,25 @@
+.toggleBar {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.toggleButton {
+  margin: 0 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.toggleButton:hover {
+  background-color: #e0e0e0;
+}
+
+.active {
+  border: 2px solid #007bff;
+  background-color: #007bff;
+  color: #fff;
+}
