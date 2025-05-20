@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: center;
+  font-family: 'Merriweather', serif;
   margin-top: 20px;
   gap: 10px;
   flex-wrap: wrap;
