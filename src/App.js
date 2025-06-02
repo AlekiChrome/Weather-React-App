@@ -13,6 +13,7 @@ function App() {
   const [unit, setUnit] = useState('metric');
   const [coords, setCoords] = useState([20, 0]);
   const [theme, setTheme] = useState('light');
+  const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     const savedCity = localStorage.getItem('lastCity');
@@ -36,6 +37,7 @@ function App() {
     setCity('');
     setWeather(null);
     setForecast([]);
+    setAlerts([]);
   };
 
   const getWeatherData = async () => {
@@ -44,6 +46,7 @@ function App() {
     setError('');
     setWeather(null);
     setForecast([]);
+    setAlerts([]);
 
     try {
       const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
@@ -67,6 +70,15 @@ function App() {
         .filter((item) => item.dt_txt.includes('12:00:00'))
         .slice(0, 5);
       setForecast(daily);
+
+      // Fetch alerts
+      const alertsRes = await fetch(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${weatherData.coord.lat}&lon=${weatherData.coord.lon}&exclude=minutely,hourly,daily&appid=${apiKey}`
+      );
+      if (alertsRes.ok) {
+        const alertsData = await alertsRes.json();
+        setAlerts(alertsData.alerts || []);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -76,7 +88,7 @@ function App() {
 
   return (
     <div className={`${styles.container} ${styles[theme]}`}>
-      <h1>Weather App</h1>
+      <h1>ClimeCast</h1>
       <input
         className={styles.input}
         value={city}
@@ -103,6 +115,21 @@ function App() {
 
       {weather && <WeatherCard weather={weather} unit={unit} theme={theme} />}
       {forecast.length > 0 && <ForecastCard forecast={forecast} unit={unit} theme={theme} />}
+      {alerts.length > 0 && (
+        <div className={styles.alertBox}>
+          <h2>⚠️ Weather Alerts</h2>
+          {alerts.map((alert, index) => (
+            <div key={index} className={styles.alert}>
+              <strong>{alert.event}</strong> — {alert.sender_name}
+              <p>{alert.description}</p>
+              <small>
+                From: {new Date(alert.start * 1000).toLocaleString()} <br />
+                To: {new Date(alert.end * 1000).toLocaleString()}
+              </small>
+            </div>
+          ))}
+        </div>
+      )}
       {weather && (
         <WeatherMap
           coords={coords}
