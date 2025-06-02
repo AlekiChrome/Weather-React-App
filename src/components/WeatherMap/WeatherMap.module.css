@@ -2,6 +2,7 @@
   margin-top: 30px;
 }
 
+.baseMapToggle,
 .toggleBar {
   display: flex;
   justify-content: center;
@@ -27,4 +28,17 @@
 .active {
   background-color: #555;
   color: white;
+}
+
+.opacityControl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: inherit;
+}
+
+.opacityControl input[type='range'] {
+  margin-left: 10px;
 }
