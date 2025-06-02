@@ -53,3 +53,10 @@
   background-color: #007bff;
   color: #fff;
 }
+
+.iconRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
